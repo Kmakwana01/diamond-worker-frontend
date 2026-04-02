@@ -1,0 +1,77 @@
+{
+  "expo": {
+    "name": "Diamond Work",
+    "slug": "diamond-work",
+    "version": "2.3.0",
+    "description": "Professional work tracking app for diamond workers. Track daily work, manage payments, generate reports.",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "userInterfaceStyle": "automatic",
+    "newArchEnabled": false,
+    "plugins": [
+      [
+        "@react-native-google-signin/google-signin",
+        {
+          "webClientId": "689727330976-k88f12dluq5k6q0kdjgvk0pelacnrsp1.apps.googleusercontent.com",
+          "iosUrlScheme": "com.googleusercontent.apps.689727330976"
+        }
+      ],
+      [
+        "expo-splash-screen",
+        {
+          "image": "./assets/splash-icon.png",
+          "resizeMode": "contain",
+          "backgroundColor": "#F4F2FF"
+        }
+      ]
+    ],
+    "splash": {
+      "image": "./assets/splash-icon.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#F4F2FF"
+    },
+    "android": {
+      "package": "com.kmsoftx.dailywork",
+      "versionCode": 4,
+      "compileSdkVersion": 35,
+      "targetSdkVersion": 35,
+      "minSdkVersion": 24,
+      "applicationName": "Diamond Work",
+      "description": "Track daily work entries, manage payment records, and generate detailed reports for diamond workers, carpenters, plumbers, and masons.",
+      "playStoreCategories": [
+        "BUSINESS",
+        "PRODUCTIVITY"
+      ],
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/adaptive-icon.png",
+        "backgroundColor": "#FFFFFF"
+      },
+      "permissions": [
+        "android.permission.INTERNET",
+        "android.permission.ACCESS_NETWORK_STATE"
+      ],
+      "privacyPolicyUrl": "https://sites.google.com/view/dailywork-privacy-policy/home",
+      "icon": "./assets/icon.png",
+      "splash": {
+        "image": "./assets/splash-icon.png",
+        "resizeMode": "contain",
+        "backgroundColor": "#F4F2FF"
+      },
+      "edgeToEdgeEnabled": true,
+      "predictiveBackGestureEnabled": false
+    },
+    "ios": {
+      "splash": {
+        "image": "./assets/splash-icon.png",
+        "resizeMode": "contain",
+        "backgroundColor": "#F4F2FF"
+      },
+      "supportsTablet": true,
+      "bundleIdentifier": "com.kmsoftx.dailywork"
+    },
+    "web": {
+      "favicon": "./assets/favicon.png"
+    },
+    "scheme": "Diamond Work"
+  }
+}

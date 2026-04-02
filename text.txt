@@ -1,0 +1,64 @@
+emulator -avd Pixel_4_API_30
+
+For debug build:
+./gradlew assembleDebug
+
+For release build:
+./gradlew assembleRelease
+
+For AAB
+./gradlew bundleRelease
+
+/android (master)
+$ ./gradlew clean
+npx react-native start
+npx expo prebuild
+emulator -list-avds     List available AVDs:
+npx react-native run-android
+adb devices      2. Check if Emulator is Connected
+npx expo start
+npx expo start --tunnel
+tsc --noEmit
+
+adb uninstall com.anonymous.workerapp2
+
+
+### new react-native project
+
+
+npm install @react-navigation/rt @react-navigation/native-stack
+npx expo install react-native-screens react-native-safe-area-context
+📂 MyNavigationApp/
+ ┣ 📂 src/
+ ┃ ┣ 📂 components/       # Reusable UI components
+ ┃ ┣ 📂 screens/          # Individual screen components
+ ┃ ┃ ┣ HomeScreen.tsx
+ ┃ ┃ ┗ ProfileScreen.tsx
+ ┃ ┣ 📂 navigation/       # Navigation configuration
+ ┃ ┃ ┣ AppNavigator.tsx
+ ┃ ┃ ┗ types.ts
+ ┃ ┣ 📂 utils/           # Helper functions
+ ┃ ┣ 📂 constants/       # App-wide constants
+ ┃ ┗ App.tsx             # Root component
+ ┣ index.js              # Entry point
+ ┗ package.json
+
+cd MyNavigationApp
+
+
+
+
+expo install expo-dev-client
+expo prebuild
+
+
+# For debug keystore
+cd android
+./gradlew signingReport
+
+# OR for Windows
+cd android
+./gradlew signingReport
+
+
+ px expo start --dev-client
