@@ -14,13 +14,21 @@ import mobileAds, { MaxAdContentRating } from 'react-native-google-mobile-ads';
 // Swap __DEV__ guard with your real IDs before production build.
 
 /** Banner ad unit – appears at bottom of screens */
-export const BANNER_AD_UNIT_ID = 'ca-app-pub-6812441129105873/2016733406';
+export let BANNER_AD_UNIT_ID = 'ca-app-pub-6812441129105873/2016733406';
 
 /** Interstitial ad unit – full-screen between actions */
-export const INTERSTITIAL_AD_UNIT_ID = 'ca-app-pub-6812441129105873/5764406724';
+export let INTERSTITIAL_AD_UNIT_ID = 'ca-app-pub-6812441129105873/5764406724';
 
 /** Rewarded ad unit – for future use */
-export const REWARDED_AD_UNIT_ID = 'ca-app-pub-6812441129105873/2369124604';
+export let REWARDED_AD_UNIT_ID = 'ca-app-pub-6812441129105873/2369124604';
+
+/** Function to update Ad IDs from Remote Config */
+export const updateAdUnitIds = (ids: { banner?: string; interstitial?: string; rewarded?: string }) => {
+    if (ids.banner) BANNER_AD_UNIT_ID = ids.banner;
+    if (ids.interstitial) INTERSTITIAL_AD_UNIT_ID = ids.interstitial;
+    if (ids.rewarded) REWARDED_AD_UNIT_ID = ids.rewarded;
+    console.log('[AdMob] 🔄 Ad Unit IDs updated from Remote Config');
+};
 
 // ─── Initialization ───────────────────────────────────────────────────────────
 

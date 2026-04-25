@@ -8,6 +8,9 @@ import { Platform } from "react-native";
 export interface RemoteConfigValues {
   apiBaseUrl: string;
   googleWebClientId: string;
+  adBannerId: string;
+  adInterstitialId: string;
+  adRewardedId: string;
 }
 
 /* ───────────────────────────────────────────── */
@@ -44,6 +47,9 @@ const DEFAULT_CONFIG: RemoteConfigValues = {
   apiBaseUrl: `http://${getDefaultHost()}:8085/api/v1/`,
   googleWebClientId:
     "689727330976-k88f12dluq5k6q0kdjgvk0pelacnrsp1.apps.googleusercontent.com",
+  adBannerId: 'ca-app-pub-6812441129105873/2016733406',
+  adInterstitialId: 'ca-app-pub-6812441129105873/5764406724',
+  adRewardedId: 'ca-app-pub-6812441129105873/2369124604',
 };
 
 /* ───────────────────────────────────────────── */
@@ -114,6 +120,9 @@ const fetchFirebaseConfig = async (): Promise<RemoteConfigValues | null> => {
     const config: RemoteConfigValues = {
       apiBaseUrl: entries.apiBaseUrl || DEFAULT_CONFIG.apiBaseUrl,
       googleWebClientId: entries.googleWebClientId || DEFAULT_CONFIG.googleWebClientId,
+      adBannerId: entries.adBannerId || DEFAULT_CONFIG.adBannerId,
+      adInterstitialId: entries.adInterstitialId || DEFAULT_CONFIG.adInterstitialId,
+      adRewardedId: entries.adRewardedId || DEFAULT_CONFIG.adRewardedId,
     };
 
     console.log("🔥 Firebase Remote Config fetched:", {
@@ -216,11 +225,23 @@ const fetchAndUpdate = async () => {
 /* ───────────────────────────────────────────── */
 
 const applyConfig = (config: RemoteConfigValues) => {
+  // Update API Config
   import("@/config/api.config").then((module) => {
     module.API_CONFIG.BASE_URL = config.apiBaseUrl;
     module.API_CONFIG.GOOGLE_WEB_CLIENT_ID = config.googleWebClientId;
   }).catch((err) => {
-    console.error("❌ Failed to apply config:", err);
+    console.error("❌ Failed to apply API config:", err);
+  });
+
+  // Update AdMob Config
+  import("@/utils/admob").then((module) => {
+    module.updateAdUnitIds({
+      banner: config.adBannerId,
+      interstitial: config.adInterstitialId,
+      rewarded: config.adRewardedId,
+    });
+  }).catch((err) => {
+    console.error("❌ Failed to apply AdMob config:", err);
   });
 };
 
