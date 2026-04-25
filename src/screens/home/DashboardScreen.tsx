@@ -13,6 +13,7 @@ import { useTranslation } from "react-i18next";
 import Toast from "react-native-toast-message";
 import { scale, verticalScale } from "react-native-size-matters";
 import { useDashboardData } from "@/hooks/useDashboardData";
+import { useInterstitialAd } from "@/hooks/useInterstitialAd";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import QuickActionsCard from "@/components/dashboard/QuickActionsCard";
 import StatsGrid from "@/components/dashboard/StatsGrid";
@@ -20,12 +21,14 @@ import AppHeader from "@/components/common/AppHeader";
 import BalanceCard from "@/components/dashboard/BalanceCard";
 import AddWorkModal from "@/components/dashboard/AddWorkModal";
 import theme from "@/styles/dashboard";
+import AdBanner from "@/components/ads/AdBanner";
 
 const DashboardScreen: React.FC = memo(() => {
   const insets = useSafeAreaInsets();
   const navigation = useNavigation();
   const { t } = useTranslation();
   const { stats, loading, refresh } = useDashboardData();
+  const { showAd } = useInterstitialAd();
 
   // State management
   const [showAddWork, setShowAddWork] = useState(false);
@@ -83,12 +86,14 @@ const DashboardScreen: React.FC = memo(() => {
   useFocusEffect(
     useCallback(() => {
       const onBackPress = () => {
-        if (showAddWork) {
+        if (showAddWork)
+        {
           setShowAddWork(false);
           return true;
         }
 
-        if (backPressCount === 0) {
+        if (backPressCount === 0)
+        {
           setBackPressCount(1);
           Toast.show({
             type: "info",
@@ -118,14 +123,16 @@ const DashboardScreen: React.FC = memo(() => {
 
   // Refresh handler
   const onRefresh = useCallback(async () => {
-    try {
+    try
+    {
       await refresh();
       Toast.show({
         type: "success",
         text1: t("common.success"),
         text2: t("home.refreshSuccess"),
       });
-    } catch (err) {
+    } catch (err)
+    {
       console.error("Refresh error:", err);
       Toast.show({
         type: "error",
@@ -137,8 +144,9 @@ const DashboardScreen: React.FC = memo(() => {
 
   // Navigation handlers
   const handleProfilePress = useCallback(() => {
+    showAd();
     (navigation as any).navigate("ProfileMain");
-  }, [navigation]);
+  }, [navigation, showAd]);
 
   const handleOpenAddWork = useCallback(() => {
     setShowAddWork(true);
@@ -153,16 +161,19 @@ const DashboardScreen: React.FC = memo(() => {
   }, [refresh]);
 
   const handleNavigateToWork = useCallback(() => {
+    showAd();
     (navigation as any).navigate("Work");
-  }, [navigation]);
+  }, [navigation, showAd]);
 
   const handleNavigateToReports = useCallback(() => {
+    showAd();
     (navigation as any).navigate("Reports");
-  }, [navigation]);
+  }, [navigation, showAd]);
 
   const handleNavigateToPayments = useCallback(() => {
+    showAd();
     (navigation as any).navigate("Payments");
-  }, [navigation]);
+  }, [navigation, showAd]);
 
   return (
     <View style={styles.container}>
@@ -215,6 +226,9 @@ const DashboardScreen: React.FC = memo(() => {
           />
         </Animated.View>
       </ScrollView>
+
+      {/* ── Fixed AdMob Banner ── */}
+      <AdBanner />
 
       <AddWorkModal
         visible={showAddWork}

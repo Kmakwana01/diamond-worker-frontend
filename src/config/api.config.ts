@@ -8,7 +8,7 @@ export const API_TIMEOUT = 15000;
 
 // ✅ Mutable config object that Firebase can update
 export const API_CONFIG = {
-  BASE_URL: "http://localhost:8085/api/v1/",
+  BASE_URL: "https://and-lots-climbing-search.trycloudflare.com/api/v1",
   TIMEOUT: API_TIMEOUT,
 
   ENDPOINTS: {

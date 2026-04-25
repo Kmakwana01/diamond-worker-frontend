@@ -355,7 +355,7 @@ const ProfileScreen = ({ navigation }: any) => {
                   {t("profile.about", "About")}
                 </Text>
                 <Text style={styles.menuSubtitle}>
-                  {t("profile.appVersion", "Version")} 2.3.0
+                  {t("profile.appVersion", "Version")} 2.5.0
                 </Text>
               </View>
               <Icon

@@ -2,7 +2,7 @@
   "expo": {
     "name": "Diamond Work",
     "slug": "diamond-work",
-    "version": "2.3.0",
+    "version": "2.4.0",
     "description": "Professional work tracking app for diamond workers. Track daily work, manage payments, generate reports.",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -23,7 +23,16 @@
           "resizeMode": "contain",
           "backgroundColor": "#F4F2FF"
         }
-      ]
+      ],
+      [
+        "react-native-google-mobile-ads",
+        {
+          "androidAppId": "ca-app-pub-6812441129105873~2152464772",
+          "iosAppId": "ca-app-pub-3940256099942544~1458002511"
+        }
+      ],
+      "@react-native-firebase/app",
+      "expo-build-properties"
     ],
     "splash": {
       "image": "./assets/splash-icon.png",
@@ -32,7 +41,7 @@
     },
     "android": {
       "package": "com.kmsoftx.dailywork",
-      "versionCode": 4,
+      "versionCode": 8,
       "compileSdkVersion": 35,
       "targetSdkVersion": 35,
       "minSdkVersion": 24,
@@ -48,7 +57,8 @@
       },
       "permissions": [
         "android.permission.INTERNET",
-        "android.permission.ACCESS_NETWORK_STATE"
+        "android.permission.ACCESS_NETWORK_STATE",
+        "com.google.android.gms.permission.AD_ID"
       ],
       "privacyPolicyUrl": "https://sites.google.com/view/dailywork-privacy-policy/home",
       "icon": "./assets/icon.png",

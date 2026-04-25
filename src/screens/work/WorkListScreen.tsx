@@ -33,6 +33,7 @@ import { getCategoryStatsConfig } from "@/config/categoryStatsConfig";
 import MonthYearPickerModal from "@/components/work/MonthYearPickerModal";
 import { workApi } from "@/api/workApi";
 import Toast from "react-native-toast-message";
+import AdBanner from "@/components/ads/AdBanner";
 
 const { width: SCREEN_WIDTH } = Dimensions.get("window");
 
@@ -145,7 +146,8 @@ const WorkListScreen: FC = () => {
   const hasEntries = !!data?.dailyBreakdown && data.dailyBreakdown.length > 0;
 
   const monthlyTotals = useMemo(() => {
-    if (!data?.dailyBreakdown) {
+    if (!data?.dailyBreakdown)
+    {
       return {
         totalQuantity: 0,
         totalEarnings: 0,
@@ -210,7 +212,8 @@ const WorkListScreen: FC = () => {
   // Dynamic calculation for rate
   const getDailyRate = (day: any) => {
     const quantity = getDailyQuantity(day);
-    if (quantity && day.earnedAmount) {
+    if (quantity && day.earnedAmount)
+    {
       return (day.earnedAmount / quantity).toFixed(2);
     }
     return "0.0";
@@ -232,7 +235,8 @@ const WorkListScreen: FC = () => {
             style: "destructive",
             onPress: async () => {
               setDeletingEntryId(entryId);
-              try {
+              try
+              {
                 await workApi.deleteWorkEntry(entryId);
                 Toast.show({
                   type: "success",
@@ -241,7 +245,8 @@ const WorkListScreen: FC = () => {
                 });
                 // Refresh data after deletion
                 await refresh();
-              } catch (error: any) {
+              } catch (error: any)
+              {
                 const msg =
                   error?.response?.data?.message ||
                   t("work.deleteFailed") ||
@@ -251,7 +256,8 @@ const WorkListScreen: FC = () => {
                   text1: t("common.error") || "Error",
                   text2: msg,
                 });
-              } finally {
+              } finally
+              {
                 setDeletingEntryId(null);
               }
             },
@@ -270,9 +276,11 @@ const WorkListScreen: FC = () => {
       },
       onPanResponderRelease: (_, gesture) => {
         const { dx } = gesture;
-        if (dx < -40) {
+        if (dx < -40)
+        {
           handleNextMonth();
-        } else if (dx > 40) {
+        } else if (dx > 40)
+        {
           handlePreviousMonth();
         }
       },
@@ -503,7 +511,8 @@ const WorkListScreen: FC = () => {
             if (entryCount > 1) toggleExpand(day.date);
           }}
           onLongPress={() => {
-            if (isSingleEntry && singleEntryId) {
+            if (isSingleEntry && singleEntryId)
+            {
               const workType =
                 day.workEntries[0]?.categoryFields?.workType ||
                 t("work.entry");
@@ -581,9 +590,9 @@ const WorkListScreen: FC = () => {
           day.workEntries?.map((item, i) => {
             const time = item.workDate
               ? new Date(item.workDate).toLocaleTimeString("en-IN", {
-                  hour: "2-digit",
-                  minute: "2-digit",
-                })
+                hour: "2-digit",
+                minute: "2-digit",
+              })
               : "";
 
             const entryQuantity =
@@ -965,7 +974,11 @@ const WorkListScreen: FC = () => {
             </Text>
           </View>
         </ScrollView>
-      )}
+      )
+      }
+
+      {/* ── Fixed AdMob Banner ── */}
+      <AdBanner />
 
       <MonthYearPickerModal
         visible={monthSheetVisible}
@@ -973,7 +986,7 @@ const WorkListScreen: FC = () => {
         onClose={() => setMonthSheetVisible(false)}
         onSelect={changeMonth}
       />
-    </View>
+    </View >
   );
 };
 

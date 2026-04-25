@@ -34,49 +34,60 @@ const AppNavigator: React.FC = () => {
     });
 
     const initializeApp = async () => {
+      console.log("🚀 [AppNavigator] Initializing...");
+      
+      // ⏱️ Safety timeout: Ensure app proceeds even if initialization is slow
+      const timeoutId = setTimeout(() => {
+        console.log("⏱️ [AppNavigator] Initialization timeout hit, forcing display");
+        setIsLoading(false);
+      }, 4000); 
+
       try {
-        await dispatch(loadLanguage());
+        await dispatch(loadLanguage()).catch(e => console.error("loadLanguage fail:", e));
 
         const [token, userData, refreshToken] = await Promise.all([
-          AsyncStorage.getItem(STORAGE_KEYS.ACCESS_TOKEN),
-          AsyncStorage.getItem(STORAGE_KEYS.USER),
-          AsyncStorage.getItem(STORAGE_KEYS.REFRESH_TOKEN),
+          AsyncStorage.getItem(STORAGE_KEYS.ACCESS_TOKEN).catch(() => null),
+          AsyncStorage.getItem(STORAGE_KEYS.USER).catch(() => null),
+          AsyncStorage.getItem(STORAGE_KEYS.REFRESH_TOKEN).catch(() => null),
         ]);
 
-        console.log("🔍 Auth check:", {
-          token: !!token,
-          user: !!userData,
-          refresh: !!refreshToken,
-        });
+        console.log("🔍 [AppNavigator] Auth status:", { hasToken: !!token, hasUser: !!userData });
 
-        // ✅ FIX: Require ALL THREE tokens for valid session
         if (token && userData && refreshToken) {
-          const user = JSON.parse(userData);
-          dispatch(setUser(user));
-          dispatch(setAuthenticated(true));
+          try {
+            const user = JSON.parse(userData);
+            dispatch(setUser(user));
+            dispatch(setAuthenticated(true));
 
-          // ✅ RESTORE CATEGORY FROM STORAGE
-          const storedCategories = await AsyncStorage.getItem("userCategories");
-          const storedPrimary = await AsyncStorage.getItem("selectedCategory");
-          const categoryToRestore =
-            storedPrimary ||
-            (storedCategories ? JSON.parse(storedCategories)[0] : "DIAMOND");
+            const storedCategories = await AsyncStorage.getItem("userCategories").catch(() => null);
+            const storedPrimary = await AsyncStorage.getItem("selectedCategory").catch(() => null);
+            
+            const categoryToRestore =
+              storedPrimary ||
+              (storedCategories ? JSON.parse(storedCategories)[0] : "DIAMOND");
 
-          await dispatch(selectCategoryForSession(categoryToRestore)).unwrap();
-          console.log("✅ Restored category:", categoryToRestore);
+            console.log("📦 [AppNavigator] Restoring category:", categoryToRestore);
+
+            // Fast race for category config
+            await Promise.race([
+              dispatch(selectCategoryForSession(categoryToRestore)).unwrap(),
+              new Promise((_, reject) => setTimeout(() => reject(new Error('timeout')), 2000))
+            ]).catch(e => console.warn("⚠️ Category fetch was slow/failed, skipping wait:", e.message));
+
+          } catch (parseError) {
+            console.error("❌ Auth data parse error:", parseError);
+            dispatch(setAuthenticated(false));
+          }
         } else {
-          // ✅ Clear incomplete sessions
-          await AsyncStorage.multiRemove([
-            STORAGE_KEYS.ACCESS_TOKEN,
-            STORAGE_KEYS.USER,
-          ]);
           dispatch(setAuthenticated(false));
-          console.log("❌ Incomplete auth data - forcing login");
+          console.log("👤 [AppNavigator] No valid session found");
         }
       } catch (error) {
-        console.error("Error initializing app:", error);
+        console.error("❌ [AppNavigator] Fatal init error:", error);
         dispatch(setAuthenticated(false));
       } finally {
+        clearTimeout(timeoutId);
+        console.log("🏁 [AppNavigator] Initialization complete");
         setIsLoading(false);
       }
     };

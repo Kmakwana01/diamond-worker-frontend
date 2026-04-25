@@ -62,3 +62,5 @@ cd android
 
 
  px expo start --dev-client
+
+ npm run android

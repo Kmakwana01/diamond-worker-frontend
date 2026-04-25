@@ -9,6 +9,7 @@ import DashboardScreen from "../screens/home/DashboardScreen";
 import WorkListScreen from "../screens/work/WorkListScreen";
 import ReportsScreen from "../screens/reports/ReportsScreen";
 import PaymentsScreen from "@/screens/payment/PaymentScreen";
+import { useInterstitialAd } from "@/hooks/useInterstitialAd";
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
@@ -47,6 +48,7 @@ const MainTabNavigator = () => (
 
 const CustomTabBar = ({ state, navigation }: any) => {
   const insets = useSafeAreaInsets();
+  const { showAd } = useInterstitialAd();
 
   return (
     <View
@@ -67,7 +69,10 @@ const CustomTabBar = ({ state, navigation }: any) => {
           return (
             <TouchableOpacity
               key={route.key}
-              onPress={() => navigation.navigate(route.name)}
+              onPress={() => {
+                showAd();
+                navigation.navigate(route.name);
+              }}
               style={styles.iconButton}
               activeOpacity={0.7}
             >
@@ -104,7 +109,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-around',
     paddingVertical: 16,
     paddingHorizontal: 20,
-    paddingBottom : 12
+    paddingBottom: 12
   },
   iconButton: {
     flex: 1,

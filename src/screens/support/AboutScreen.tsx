@@ -47,7 +47,7 @@ const theme = {
   },
 };
 
-const APP_VERSION = "2.3.0";
+const APP_VERSION = "2.5.0";
 const BUILD_NUMBER = "100";
 
 interface FeatureItem {

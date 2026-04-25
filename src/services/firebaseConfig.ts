@@ -86,6 +86,9 @@ const fetchFirebaseConfig = async (): Promise<RemoteConfigValues | null> => {
 
     console.log("🔄 Fetching from Firebase Remote Config...");
 
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 5000);
+
     const response = await fetch(url, {
       method: 'POST',
       headers: {
@@ -93,7 +96,10 @@ const fetchFirebaseConfig = async (): Promise<RemoteConfigValues | null> => {
         'X-Goog-Api-Key': FIREBASE_CONFIG.apiKey,
       },
       body: JSON.stringify(payload),
+      signal: controller.signal,
     });
+
+    clearTimeout(timeoutId);
 
     if (!response.ok) {
       const errorText = await response.text();
